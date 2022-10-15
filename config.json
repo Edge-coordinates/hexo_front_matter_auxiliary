@@ -1,0 +1,6 @@
+{
+    "remove_blank_lines": true,
+    "regenerate_all": false,
+    "make_date": true,
+    "fix_content":{"date":"date:", "title":"title:","":"","":""}
+}
