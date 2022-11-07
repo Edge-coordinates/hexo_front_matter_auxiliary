@@ -6,9 +6,9 @@ import os
 import json5
 
 
-def fm_dev(rpath, tname, oldf = []): # 生成Front-matter
+def fm_dev(rpath, filename, oldf = []): # 生成Front-matter
     rpath = rpath.split(os.path.sep)
-    tit = "title: " + tname + "\n"
+    tit = "title: " + filename + "\n"
     tmpl = ["---\n", tit, "date: ", "categories:\n", "tags:\n"]
     tmpl = tmpl + oldf + ["---\n"]
     
@@ -30,14 +30,14 @@ fapath = os.path.split(os.path.realpath(__file__))[0]
 config = json5.load(open('./config.json', 'r', encoding='utf-8'))
 
 
-for folderName, subfolders, filenames in os.walk(fapath):
-    for filename in filenames:
+for folderName, subfolders, full_full_filenames in os.walk(fapath):
+    for full_filename in full_full_filenames:
         # 获取前缀（文件名称）
-        tname = os.path.splitext(filename)[0]
-        if os.path.splitext(filename)[-1][1:] == "md" :
+        filename = os.path.splitext(full_filename)[0]
+        if os.path.splitext(full_filename)[-1][1:] == "md" :
 
             rpath = os.path.relpath(folderName, fapath) # 获取相对路径
-            filepath = rpath + "\\" + filename # 获取文件的相对路径
+            filepath = rpath + "\\" + full_filename # 获取文件的相对路径
             # print(filepath) # 测试路径是否正确
             TFile = open(filepath, 'r', encoding='utf-8') # 打开文件(只读)
             conntent = TFile.readlines() # 按行读取
@@ -45,7 +45,7 @@ for folderName, subfolders, filenames in os.walk(fapath):
             if(conntent[0] == "---\n"): # 处理过的
                 continue
             else:
-                conntent = fm_dev(rpath, tname) + ["\n\n"] + conntent
+                conntent = fm_dev(rpath, filename) + ["\n\n"] + conntent
                 TFile = open(filepath, 'w', encoding='utf-8')
                 TFile.writelines(conntent)
                 TFile.close()
